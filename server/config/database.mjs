@@ -4,7 +4,7 @@ import config from "./config.mjs";
 
 const connectDB = async () => {
     try {
-        const conn = new mongoose.connect(config.databaseURI);
+        const conn = await mongoose.connect(config.databaseURI);
         console.log(`MongoDB connected : ${conn.connection.host}`);
     } catch (error) {
         console.log(`Error : ${error.message}`)
