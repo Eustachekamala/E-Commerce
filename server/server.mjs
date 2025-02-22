@@ -4,6 +4,7 @@ import connectDB from "./config/database.mjs";
 import cookieparser from "cookie-parser";
 import cors from "cors";
 import globalErrorHandler from "./middlewares/globalErrorHandler.mjs";
+import authRoutes from "./routes/auth/authRoutes.mjs"
 
 const app = express();
 const PORT = config.port;
@@ -32,6 +33,8 @@ app.use(cookieparser());
 app.get('/', (req, res) =>{
     res.status(200).send({message: "welcome to the e-commere api"});
 })
+
+app.use("/api/auth",authRoutes);
 
 app.use(globalErrorHandler);
 
