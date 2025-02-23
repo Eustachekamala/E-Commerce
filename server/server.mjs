@@ -15,16 +15,16 @@ connectDB();
 
 
 app.use(cors({
-    credentials: true,
     origin: ["http://localhost:3000"],
     methods : ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders : [
-        "content-Type",
+        "Content-Type",
         "Authorization",
         "cache-control",
         "Expires",
         "Pragma"
-    ]
+    ],
+    credentials: true
 }));
 
 app.use(express.json());

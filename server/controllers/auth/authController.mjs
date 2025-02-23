@@ -1,79 +1,142 @@
-import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import User from "../../models/User.mjs";
 
 //register
 export const registerUser = async (req, res, next) => {
-    const { userName, email, password } = req.body;
+  const { userName, email, password } = req.body;
 
-    // Check if all fields are provided
-    if (!userName || !email || !password) {
-        const error = createHttpError(400, "All fields are required!");
-        return next(error);
+  // Check if all fields are provided
+  if (!userName || !email || !password) {
+    const error = new Error("All fields are required!");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  try {
+    // Check if the user already exists
+    const checkUser = await User.findOne({ email });
+    if (checkUser) {
+      return res.json({
+        success: false,
+        message: "User already exists with this email! Please try again.",
+      });
     }
 
-    try {
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 12);
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 12);
 
-        // Create a new user instance
-        const newUser = new User({
-            userName,
-            email,
-            password: hashedPassword, // Save the hashed password
-        });
+    // Create a new user instance
+    const newUser = new User({
+      userName,
+      email,
+      password: hashedPassword,
+    });
 
-        // Save the user to the database
-        await newUser.save();
+    // Save the user to the database
+    await newUser.save();
 
-        // Send a success response
-        res.status(201).json({
-            success: true,
-            message: "User registered successfully!",
-            user: {
-                id: newUser._id,
-                userName: newUser.userName,
-                email: newUser.email,
-            },
-        });
-    } catch (error) {
-        // Handle errors (e.g., duplicate email, database errors)
-        if (error.code === 11000) {
-            // Duplicate key error (e.g., email already exists)
-            const err = createHttpError(400, "Email already exists!");
-            return next(err);
-        }
-        next(error);
+    // Send a success response
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully!",
+      user: {
+        id: newUser._id,
+        userName: newUser.userName,
+        email: newUser.email,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error. Please try again." });
+    next(error);
+  }
+};
+
+//login
+export const loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // Check if all fields are provided
+  if (!email || !password) {
+    return res.status(400).json({
+        success: false,
+        message: "All fileds are required",
+      });
+  }
+
+  try {
+    // Find the user by email
+    const checkUser = await User.findOne({ email });
+    if (!checkUser) {
+      return res.status(401).json({
+        success: false,
+        message: "User doesn't exits! Please register first",
+      });
     }
+
+    // Compare the password
+    const isPasswordValid = await bcrypt.compare(password, checkUser.password);
+    if (!isPasswordValid) {
+      return res.json({
+        success: false,
+        message: "Invalid password! Please try again",
+      });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ 
+        id: checkUser._id, 
+        role: checkUser.role,
+        email: checkUser.email
+         }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+     // Send a success response with the token
+    res.cookie('token', token, { httpOnly : true, secure : false});
+    res.status(200).json({
+        success: true,
+        message : "Logged in succesfully",
+        user: {
+        id: checkUser._id,
+        userName: checkUser.userName,
+        email: checkUser.email,
+        role: checkUser.role
+      },
+    })
+
+  } catch (error) {
+    // Handle errors
+   console.log(error);
+   
+  }
 };
 
 
-
-//login
-export const login = async (req, res, next) => {
-    const { email, password } = req.body
-        if(!email || !password){
-            const error = createHttpError(400, "All fields are required");
-            return next(error);
-        }
-    try {
-        
-    } catch (error) {
-        next(error)
-    }
-}
-
-
-// logout
+//logout 
 export const logout = async (req, res, next) => {
-
-    try {
-        
-    } catch (error) {
-        next(error)
-    }
-}
+  res.clearCookie("token").json({
+    success: true,
+    message: "Logout succesfully"
+  })
+};
 
 //auth middleware
+export const authMiddleware = async (req, res, next) => {
+  const token = req.cookies.token;
+  if(!token) return res.status(401).json({
+    success : false,
+    messag : "unauthorized user!",
+  })
 
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+      res.status(401).json({
+      success : false,
+      messag : "unauthorized user!",
+    })
+  }
+}
