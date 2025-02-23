@@ -15,13 +15,17 @@ import ShoppingHome from "./pages/shopping/Home"
 import ShoppingListing from "./pages/shopping/Listing"
 import CheckAuth from "./components/common/Check-auth"
 import Unauthorized from "./pages/unauth-page/Unauthorized"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { checkAuth } from "./store/auth-slice"
 
 function App() {
- const isAuthenticated = false;
- const user = {
-    name : "Eustache",
-    role : "admin"
- };
+ const {user, isAuthenticated} = useSelector(state => state.auth)
+ const dispatch = useDispatch();
+
+ useEffect(() => {
+  dispatch(checkAuth())
+ }, [dispatch])
 
   return (
     <div>
