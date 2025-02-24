@@ -16,16 +16,29 @@ import ShoppingListing from "./pages/shopping/Listing"
 import CheckAuth from "./components/common/Check-auth"
 import Unauthorized from "./pages/unauth-page/Unauthorized"
 import { useDispatch, useSelector } from "react-redux"
+import { Loader2 } from "lucide-react"
 import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice"
 
 function App() {
- const {user, isAuthenticated} = useSelector(state => state.auth)
+ const {user, isAuthenticated, isLoading } = useSelector(state => state.auth)
  const dispatch = useDispatch();
 
  useEffect(() => {
   dispatch(checkAuth())
  }, [dispatch])
+
+ if (isLoading) {
+  return (
+    <div className="flex items-center justify-center w-full h-screen">
+          <Loader2 className="w-20 h-20 text-primary animate-spin" />
+    </div>
+  );
+}
+
+
+ console.log(isLoading, user);
+ 
 
   return (
     <div>
