@@ -25,7 +25,9 @@ const AuthLogin = () => {
           {
           style: {
             background: 'green',
-            color: 'white'
+            color: 'white',
+            margin: "auto",
+            textAlign: "center"
           }
         });
        } else {

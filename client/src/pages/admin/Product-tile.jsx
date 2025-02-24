@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import PropTypes from "prop-types";
 
-function AdminProductTile({product, setCurrentEditedId, setOpenCreateProductsDialog, setFormData}) {
+function AdminProductTile({product, setCurrentEditedId, setOpenCreateProductsDialog, setFormData, handleDeleteProduct}) {
     return (  
         <Card className="w-full max-w-sm mx-auto">
             <div>
@@ -25,7 +25,7 @@ function AdminProductTile({product, setCurrentEditedId, setOpenCreateProductsDia
                     setCurrentEditedId(product?._id)
                     setFormData(product)
                 }}>Edit</Button>
-                <Button>Delete</Button>
+                <Button onClick={() => handleDeleteProduct(product?._id)}>Delete</Button>
             </CardFooter>
             </div>
         </Card>

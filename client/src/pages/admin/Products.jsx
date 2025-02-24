@@ -3,7 +3,7 @@ import CommonForm from "@/components/common/Form"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { addProductFormElements } from "@/config"
-import { addNewProduct, fetchAllProducts } from "@/store/admin/products-slice/index.mjs"
+import { addNewProduct, deleteProduct, editProduct, fetchAllProducts } from "@/store/admin/products-slice/index.mjs"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "sonner";
@@ -20,6 +20,30 @@ const initialFormData = {
   totalStock : ""
 }
 
+/**
+ * AdminProducts component is used to manage the products in the admin panel.
+ * It allows the admin to add new products, edit existing products, and view the list of products.
+ *
+ * @component
+ * @example
+ * return (
+ *   <AdminProducts />
+ * )
+ *
+ * @returns {JSX.Element} The rendered component.
+ *
+ * @description
+ * - Uses `useState` to manage the state of the create product dialog, form data, image file, current edited product ID, uploaded image URL, and image loading state.
+ * - Uses `useSelector` to access the product list from the Redux store.
+ * - Uses `useDispatch` to dispatch actions to the Redux store.
+ * - Fetches all products on component mount using `useEffect`.
+ * - Handles form submission for adding and editing products.
+ * - Displays a button to open the create product dialog.
+ * - Displays a grid of product tiles.
+ * - Uses the `Sheet` component to display the create/edit product form in a side panel.
+ * - Uses the `ProductImageUpload` component for uploading product images.
+ * - Uses the `CommonForm` component for the product form.
+ */
 const AdminProducts = () => {
 
   const [openCreateProductsDialog, setOpenCreateProductsDialog] = useState(false);
@@ -34,6 +58,26 @@ const AdminProducts = () => {
 
   const onSubmit = (e) =>{
     e.preventDefault();
+    currentEditedId !== null ? dispatch(editProduct({
+      id : currentEditedId ,formData
+    })).then((data) => {
+      if(data?.payload?.success){
+        dispatch(fetchAllProducts());
+        toast.success(data.payload.message,
+          {
+          style: {
+            background: 'yellow',
+            color: 'black',
+            margin: "auto",
+            textAlign: "center"
+          }
+        })
+        setFormData(initialFormData);
+        setOpenCreateProductsDialog(false);
+        setCurrentEditedId(null)
+      }
+  
+    }) :
     dispatch(addNewProduct({
       ...formData, 
       image: uploadedImageUrl
@@ -48,7 +92,9 @@ const AdminProducts = () => {
           {
           style: {
             background: 'green',
-            color: 'white'
+            color: 'white',
+            margin: "auto",
+            textAlign: "center"
           }
         })
       }
@@ -59,8 +105,34 @@ const AdminProducts = () => {
     dispatch(fetchAllProducts())
   },[dispatch])
 
-  // console.log(formData, "productList");
+  function handleDeleteProduct(getCurrentProductId){
+    console.log(getCurrentProductId);
+    
+    dispatch(deleteProduct(getCurrentProductId)).then(data => {
+      if(data?.payload?.success){
+        dispatch(fetchAllProducts());
+        toast.success(data.payload.message,
+          {
+          style: {
+            background: 'green',
+            color: 'white',
+            margin: "auto",
+            textAlign: "center"
+          }
+        })
+      }
+    })
+  }
   
+
+  /**
+   * Checks if all fields in the formData object are non-empty.
+   *
+   * @returns {boolean} - Returns true if all fields are non-empty, otherwise false.
+   */
+  function isFormValidData(){
+    return Object.keys(formData).map(key => formData[key] !== '').every(item => item)
+  }
 
   return (
     <>
@@ -70,10 +142,12 @@ const AdminProducts = () => {
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
         {
           productList && productList.length > 0 ?
-          productList.map(productItem => <AdminProductTile 
+          productList.map(productItem => 
+            <AdminProductTile 
                         setCurrentEditedId={setCurrentEditedId}
                         setOpenCreateProductsDialog={setOpenCreateProductsDialog}
                         setFormData={setFormData} 
+                        handleDeleteProduct={handleDeleteProduct}
                         key={productItem._id} 
                         product={productItem}/>) : null
         }
@@ -111,6 +185,7 @@ const AdminProducts = () => {
                       }
                       setFormData={setFormData} 
                       formControls={addProductFormElements}
+                      isButtonDisabled={!isFormValidData()}
                 />
               </div>
             </SheetContent>

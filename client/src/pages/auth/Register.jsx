@@ -26,7 +26,9 @@ const AuthRegister = () => {
           {
           style: {
             background: 'green',
-            color: 'white'
+            color: 'white',
+            margin: "auto",
+            textAlign: "center"
           }
         });
 
@@ -37,7 +39,9 @@ const AuthRegister = () => {
         toast.error(data.payload.message, {
           style: {
             background: 'red',
-            color: 'white'
+            color: 'white',
+            margin: "auto",
+            textAlign: "center"
           }
         })
       }
