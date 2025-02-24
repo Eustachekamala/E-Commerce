@@ -5,6 +5,7 @@ import cookieparser from "cookie-parser";
 import cors from "cors";
 import globalErrorHandler from "./middlewares/globalErrorHandler.mjs";
 import authRoutes from "./routes/auth/authRoutes.mjs"
+import adminProductRouter from "./routes/admin/product-routes.mjs"
 
 const app = express();
 const PORT = config.port;
@@ -37,6 +38,7 @@ app.get('/', (req, res) =>{
 app.use("/api/auth",authRoutes);
 
 app.use(globalErrorHandler);
+app.use('/api/admin/products',adminProductRouter);
 
 app.listen(PORT, () => {
     console.log(`E-commerce running on port ${PORT}`);
