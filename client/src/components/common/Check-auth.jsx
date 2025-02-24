@@ -14,6 +14,9 @@ import PropTypes from "prop-types";
 function CheckAuth({ isAuthenticated, user, children }) {
     const loacation = useLocation();
 
+    console.log(location.pathname, isAuthenticated);
+    
+
     if (
         !isAuthenticated &&
         !(

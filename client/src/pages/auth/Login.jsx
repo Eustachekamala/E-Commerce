@@ -28,10 +28,6 @@ const AuthLogin = () => {
             color: 'white'
           }
         });
-
-        // setTimeout(() => {
-        //   navigate("/shop");
-        // }, 1000);
        } else {
           toast.error(data.payload.message, {
               style: {
