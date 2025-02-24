@@ -25,7 +25,7 @@ import PropTypes from "prop-types";
  *
  * @returns {JSX.Element} The rendered CommonForm component.
  */
-function CommonForm({formControls, formData, setFormData, onSubmit, buttonText}) {
+function CommonForm({formControls, formData, setFormData, onSubmit, buttonText, isButtonDisabled}) {
 
     function renderInputByComponentType(getControlItem){
         let element = null;
@@ -107,7 +107,7 @@ function CommonForm({formControls, formData, setFormData, onSubmit, buttonText})
                     </div>)
                 }
             </div>
-            <Button type="submit" className="mt-4 w-full">
+            <Button disabled={isButtonDisabled} type="submit" className="mt-4 w-full">
                 {buttonText || "Submit"}
             </Button>
         </form>
