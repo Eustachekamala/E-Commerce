@@ -12,9 +12,9 @@ const AdminHeader = ({setOpen}) => {
     toast.success("Logout successful",
           {
           style: {
-            background: 'green',
-            color: 'white',
-            textAlign: "center"
+            background: 'white',
+            color: 'black',
+            width: "200px"
           },
     })
   }
