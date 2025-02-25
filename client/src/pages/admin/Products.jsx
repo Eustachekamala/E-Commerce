@@ -66,10 +66,8 @@ const AdminProducts = () => {
         toast.success(data.payload.message,
           {
           style: {
-            background: 'yellow',
+            background: 'white',
             color: 'black',
-            margin: "auto",
-            textAlign: "center"
           }
         })
         setFormData(initialFormData);
@@ -91,10 +89,8 @@ const AdminProducts = () => {
         toast.success(data.payload.message,
           {
           style: {
-            background: 'green',
-            color: 'white',
-            margin: "auto",
-            textAlign: "center"
+            background: 'white',
+            color: 'black',
           }
         })
       }
@@ -114,10 +110,8 @@ const AdminProducts = () => {
         toast.success(data.payload.message,
           {
           style: {
-            background: 'green',
-            color: 'white',
-            margin: "auto",
-            textAlign: "center"
+            background: 'white',
+            color: 'black',
           }
         })
       }

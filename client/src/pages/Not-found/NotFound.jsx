@@ -17,7 +17,7 @@ function NotFound() {
       </p>
       <button
         className="bg-[#1f1f1f] text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/shop/home")}
       >
         Go Back
       </button>

@@ -24,17 +24,17 @@ const AuthLogin = () => {
         toast.success(data.payload.message,
           {
           style: {
-            background: 'green',
-            color: 'white',
-            margin: "auto",
-            textAlign: "center"
+            background: 'white',
+            color: 'black',
+            width: "200px"
           }
         });
        } else {
           toast.error(data.payload.message, {
               style: {
               background: 'red',
-              color: 'white'
+              color: 'white',
+              width: "200px"
             }
           });
        };
