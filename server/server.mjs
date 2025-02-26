@@ -6,6 +6,8 @@ import cors from "cors";
 import globalErrorHandler from "./middlewares/globalErrorHandler.mjs";
 import authRoutes from "./routes/auth/authRoutes.mjs"
 import adminProductRouter from "./routes/admin/product-routes.mjs"
+import shopProductRouter from "./routes/shop/products-route.mjs"
+import shopCartRouter from "./routes/shop/cart-routes.mjs"
 
 const app = express();
 const PORT = config.port;
@@ -39,6 +41,8 @@ app.use("/api/auth",authRoutes);
 
 app.use(globalErrorHandler);
 app.use('/api/admin/products',adminProductRouter);
+app.use('/api/shop/products', shopProductRouter);
+app.use('api/shop/cart', shopCartRouter)
 
 app.listen(PORT, () => {
     console.log(`E-commerce running on port ${PORT}`);
