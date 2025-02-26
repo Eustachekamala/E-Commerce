@@ -8,19 +8,19 @@ const adminSidebarMenuItems = [
     id: 'dashboard',
     label: 'Dashboard',
     path: '/admin/dashboard',
-    icon: <LayoutDashboard />,
+    icon: <LayoutDashboard size={20} />,
   },
   {
     id: 'products',
     label: 'Products',
     path: '/admin/products',
-    icon: <ShoppingBasket />,
+    icon: <ShoppingBasket size={20} />,
   },
   {
     id: 'orders',
     label: 'Orders',
     path: '/admin/orders',
-    icon: <Layers />,
+    icon: <Layers size={20} />,
   },
 ];
 

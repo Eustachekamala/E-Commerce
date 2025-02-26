@@ -7,7 +7,7 @@ import { addNewProduct, deleteProduct, editProduct, fetchAllProducts } from "@/s
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "sonner";
-import AdminProductTile from "./Product-tile"
+import AdminProductTile from "../../components/admin/Product-tile"
 
 const initialFormData = {
   image: null,
@@ -133,7 +133,7 @@ const AdminProducts = () => {
       <div className="mb-5 w-full flex justify-end">
         <Button onClick={() => setOpenCreateProductsDialog(true)}>Add New Products</Button>
       </div>
-      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
         {
           productList && productList.length > 0 ?
           productList.map(productItem => 

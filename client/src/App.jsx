@@ -34,11 +34,7 @@ function App() {
           <Loader2 className="w-20 h-20 text-primary animate-spin" />
     </div>
   );
-}
-
-
- console.log(isLoading, user);
- 
+} 
 
   return (
     <div>
