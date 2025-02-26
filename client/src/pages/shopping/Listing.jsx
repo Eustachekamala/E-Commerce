@@ -9,6 +9,8 @@ import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/prod
 import ShoppingProductTile from "@/components/shopping/Product-title";
 import { useSearchParams } from "react-router-dom";
 import ProductDetailsDialog from "@/components/shopping/ProductDetails";
+import { addtoCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { toast } from "sonner";
 
 function createSearchParamsHelper(filterParams){
     const queryparams = [];
@@ -26,10 +28,12 @@ function createSearchParamsHelper(filterParams){
 }
 
 function ShoppingListing() {
+    const { user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const {productList, productDetails} = useSelector(state => state.shoppingProducts)
     const [filters, setFilters] = useState({});
     const [sort, setSort] = useState(null);
+    // eslint-disable-next-line no-unused-vars
     const [searchParams, setSearchParams] = useSearchParams();
     const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
@@ -75,6 +79,39 @@ function ShoppingListing() {
         sessionStorage.setItem('filters', JSON.stringify(copyFilters))
     }
 
+    function handleAddToCart(getCurrentProductId) {
+    console.log(getCurrentProductId);
+    dispatch(addtoCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
+        .then((data) => {
+            if (data?.payload?.success) {
+                dispatch(fetchCartItems(user?.id));
+                toast.success("Product added to the cart successfully", {
+                    style: {
+                        background: "white",
+                        color: "black",
+                    },
+                });
+            } else {
+                toast.error("Failed to add product to cart", {
+                    style: {
+                        background: "white",
+                        color: "black",
+                    },
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error adding to cart:", error);
+            toast.error("An error occurred while adding to cart", {
+                style: {
+                    background: "white",
+                    color: "black",
+        
+                },
+            });
+        });
+}
+
     useEffect(() => {
         setSort('price-lowtohigh');
         setFilters(JSON.parse(sessionStorage.getItem('filters')) || {});
@@ -85,7 +122,7 @@ function ShoppingListing() {
             const createQueryString = createSearchParamsHelper(filters)
             setSearchParams(new URLSearchParams(createQueryString))
         }
-    }, [filters])
+    }, [filters, setSearchParams])
 
 
     useEffect(() =>{
@@ -94,12 +131,11 @@ function ShoppingListing() {
         }
     },[productDetails])
 
-    console.log(filters, searchParams, productDetails,"productList");
 
     const handleGetProductDetails = (getCurrentProductId) => {
-        console.log(getCurrentProductId);
         dispatch(fetchProductDetails(getCurrentProductId))
     }
+
 
     return ( 
         <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 px-6">
@@ -131,7 +167,13 @@ function ShoppingListing() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                     {
                         productList && productList.length > 0 ? 
-                        productList.map((productItem, index) => <ShoppingProductTile handleGetProductDetails={handleGetProductDetails}  key={index} product={productItem} />) : null
+                        productList.map((productItem, index) => 
+                        <ShoppingProductTile 
+                                handleGetProductDetails={handleGetProductDetails} 
+                                key={index} 
+                                product={productItem}
+                                handleAddToCart={handleAddToCart}
+                         />) : null
                     }
                 </div>
             </div>
