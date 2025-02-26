@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import PropTypes from "prop-types";
 import { ShoppingCart } from "lucide-react";
 
-function ShoppingProductTile({product, handleGetProductDetails}) {
+function ShoppingProductTile({product, handleGetProductDetails, handleAddToCart}) {
     return ( 
         <Card className="w-full max-w-sm mx-auto p-4 my-4">
             <div onClick={() => handleGetProductDetails(product?._id)}>
@@ -38,20 +38,21 @@ function ShoppingProductTile({product, handleGetProductDetails}) {
                         }
                     </div>
                 </CardContent>
+            </div>
                 <CardFooter>
-                    <Button className="w-full flex items-center">
+                    <Button onClick={() =>handleAddToCart(product?._id)} className="w-full flex items-center">
                         <span className="font-semibold">Add to cart</span>
                         <ShoppingCart className="w-6 h-6"/>
                     </Button>
                 </CardFooter>
-            </div>
         </Card>
      );
 }
 
 ShoppingProductTile.propTypes = {
     product : PropTypes.object,
-    handleGetProductDetails : PropTypes.func
+    handleGetProductDetails : PropTypes.func,
+    handleAddToCart : PropTypes.func
 }
 
 export default ShoppingProductTile;
