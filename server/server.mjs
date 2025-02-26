@@ -42,7 +42,7 @@ app.use("/api/auth",authRoutes);
 app.use(globalErrorHandler);
 app.use('/api/admin/products',adminProductRouter);
 app.use('/api/shop/products', shopProductRouter);
-app.use('api/shop/cart', shopCartRouter)
+app.use('/api/shop/cart', shopCartRouter)
 
 app.listen(PORT, () => {
     console.log(`E-commerce running on port ${PORT}`);
