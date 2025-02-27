@@ -6,8 +6,48 @@ import { ShoppingCart, StarIcon } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Input } from "../ui/input";
+import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { addtoCart, fetchCartItems } from "@/store/shop/cart-slice";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
+    const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+
+    function handleAddToCart(getCurrentProductId) {
+        console.log(getCurrentProductId);
+        dispatch(addtoCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
+            .then((data) => {
+                if (data?.payload?.success) {
+                    dispatch(fetchCartItems(user?.id));
+                    toast.success("Product added to the cart successfully", {
+                        style: {
+                            background: "white",
+                            color: "black",
+                        },
+                    });
+                } else {
+                    toast.error("Failed to add product to cart", {
+                        style: {
+                            background: "white",
+                            color: "black",
+                        },
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error adding to cart:", error);
+                toast.error("An error occurred while adding to cart", {
+                    style: {
+                        background: "white",
+                        color: "black",
+            
+                    },
+                });
+            });
+        }
+
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="grid lg:grid-cols-2 grid-cols-1 gap-8 sm:p-12 max-w-[80vw] sm:max-w-[60vw] lg:max-w-[50vw] backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-100">
@@ -56,7 +96,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                         <span className="text-muted-foreground">(4.5)</span>
                     </div>
                     {/* Add a Call-to-Action Button */}
-                        <Button className="w-full flex items-center">
+                        <Button onClick={() => handleAddToCart(productDetails?._id)} className="w-full flex items-center">
                             <span className="font-semibold">Add to cart</span>
                             <ShoppingCart className="w-6 h-6"/>
                         </Button>
