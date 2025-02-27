@@ -12,15 +12,17 @@ The E-Commerce project is a full-stack application that allows users to browse a
 - Payment processing
 - Order tracking
 - Admin dashboard
+- Account View
+- Home Page shop
 
 ## Project Requirements
 
-- Node.js version 14.x
-- Express.js version 4.x
-- MongoDB version 4.x
-- React.js version 17.x
-- Tailwind CSS version 3.x
-- Redux Toolkit version 1.x
+- Node.js
+- Express.js
+- MongoDB
+- React.js
+- Tailwind CSS
+- Redux Toolkit
 
 ## Project Setup
 
