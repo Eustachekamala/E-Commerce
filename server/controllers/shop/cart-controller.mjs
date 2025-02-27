@@ -222,64 +222,59 @@ export const updateCartItemQuantity = async (req, res) => {
 
 export const deleteCartItem = async (req, res) => {
     try {
-        const { userId, productId } = req.params
-         if (!userId || !productId ) {
-                return res.status(400).json({
-                    success : false,
-                    message: 'Invalid data provided!'
-            });
-        };
+        const { userId, productId } = req.params;
 
-        const cart = await Cart.findOne({userId}).populate({
-            path : 'items.productId',
-            select : 'image title price salePrice'
+        if (!userId || !productId) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid data provided!'
+            });
+        }
+
+        const cart = await Cart.findOne({ userId }).populate({
+            path: 'items.productId',
+            select: 'image title price salePrice'
         });
 
-         if(!cart){
-                res.status(404).json({
-                    success : false,
-                    message : 'Cart not found!',
-                })
-            }
+        if (!cart) {
+            return res.status(404).json({
+                success: false,
+                message: 'Cart not found!',
+            });
+        }
 
-        cart.items = cart.items.filter(item => item.productId._id.toString() !== productId)
+        // Filter out the item to be deleted
+        cart.items = cart.items.filter(item => item.productId._id.toString() !== productId);
         await cart.save();
 
-        await Cart.populate({
-            path : 'items.productId',
-            select : 'image title price salePrice'
+        // Populate the remaining items
+        const populatedCart = await cart.populate({
+            path: 'items.productId',
+            select: 'image title price salePrice'
         });
 
-        /**
-         * This code snippet maps over the `cart.items` array to create a
-         *  new array of objects, each containing specific properties 
-         * (`productId`, `image`, `title`, `price`, `salePrice`, and `quantity`) 
-         * derived from the original `item` objects. It includes conditional 
-         * checks to handle cases where certain properties might be missing, 
-         * providing default values where necessary.
-         */
-        const populateCartItems = cart.items.map(item => ({
-            productId : item.productId ? item.productId._id : null,
-            image : item.productId ? item.productId.image : null,
-            title : item.productId ? item.productId.title : 'Product not found',
-            price : item.productId ? item.productId.price : null,
-            salePrice : item.productId ? item.productId.salePrice : null,
-            quantity : item.quantity
+        const populateCartItems = populatedCart.items.map(item => ({
+            productId: item.productId ? item.productId._id : null,
+            image: item.productId ? item.productId.image : null,
+            title: item.productId ? item.productId.title : 'Product not found',
+            price: item.productId ? item.productId.price : null,
+            salePrice: item.productId ? item.productId.salePrice : null,
+            quantity: item.quantity
         }));
 
         res.status(200).json({
-            success : true,
-            data : {
-                ...cart._doc,
-                items : populateCartItems
+            success: true,
+            data: {
+                ...populatedCart._doc,
+                items: populateCartItems
             }
-        })
+        });
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({
-            success : false,
-            message : 'Error occured'
-        })
+            success: false,
+            message: 'Error occurred'
+        });
     }
-}
+};
