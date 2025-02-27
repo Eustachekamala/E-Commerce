@@ -26,7 +26,6 @@ const AuthLogin = () => {
           style: {
             background: 'white',
             color: 'black',
-            width: "200px"
           }
         });
        } else {
@@ -34,7 +33,6 @@ const AuthLogin = () => {
               style: {
               background: 'red',
               color: 'white',
-              width: "200px"
             }
           });
        };
