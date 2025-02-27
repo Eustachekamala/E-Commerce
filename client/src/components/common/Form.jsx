@@ -120,6 +120,7 @@ CommonForm.propTypes = {
     setFormData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     buttonText: PropTypes.string,
+    isButtonDisabled : PropTypes.func
 };
 
 export default CommonForm;
