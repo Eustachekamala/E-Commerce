@@ -19,14 +19,27 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import UserCartwrapper from "./Cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
+import { Label } from "../ui/label";
 
 function MenuItems() {
+  const navigate = useNavigate()
+
+  function handleNavigate(getCurrentMenuItem){
+    sessionStorage.removeItem('filters')
+    const currentFilter = getCurrentMenuItem.id !== 'home' ? {
+      category : [getCurrentMenuItem.id]
+    } : null;
+
+    sessionStorage.setItem('filters', JSON.stringify(currentFilter))
+    navigate(getCurrentMenuItem.path)
+  }
+
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
-        <Link to={menuItem.path} key={menuItem.id}>
+        <Label onClick={() => handleNavigate(menuItem)} className="text-sm font-medium cursor-pointer" key={menuItem.id}>
           {menuItem.label}
-        </Link>
+        </Label>
       ))}
     </nav>
   );
