@@ -57,8 +57,7 @@ function HeaderRightContent() {
     toast.success("Logout successful", {
       style: {
         background: "white",
-        color: "black",
-        width: "200px",
+        color: "green",
       },
     });
   }
@@ -91,7 +90,7 @@ function HeaderRightContent() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
-            <AvatarFallback className="bg-black text-white font-extrabold">
+            <AvatarFallback className="bg-black text-white cursor-pointer font-extrabold">
               {user?.userName[0].toUpperCase()}
             </AvatarFallback>
           </Avatar>
