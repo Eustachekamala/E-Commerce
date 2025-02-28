@@ -6,7 +6,6 @@ import AdminLayout from "./components/admin/Layout"
 import AdminDashboard from "./pages/admin/Dashboard"
 import AdminFeatures from "./pages/admin/Features"
 import AdminProducts from "./pages/admin/Products"
-import AdminOrders from "./pages/admin/Orders"
 import ShoppingLayout from "./components/shopping/Loyout"
 import NotFound from "./pages/Not-found/NotFound"
 import ShoppingAccoount from "./pages/shopping/Account"
@@ -19,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Loader2 } from "lucide-react"
 import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice"
+import AdminOrdersList from "./pages/admin/Orders"
 
 function App() {
  const {user, isAuthenticated, isLoading } = useSelector(state => state.auth)
@@ -56,7 +56,7 @@ function App() {
             <Route path="dashboard" element={<AdminDashboard/>}/>
             <Route path="features" element={<AdminFeatures/>}/>
             <Route path="products" element={<AdminProducts/>}/>
-            <Route path="orders" element={<AdminOrders/>}/>
+            <Route path="orders" element={<AdminOrdersList/>}/>
          </Route>
          <Route path="/shop" element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
