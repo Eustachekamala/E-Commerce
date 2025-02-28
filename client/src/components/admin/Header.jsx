@@ -13,8 +13,7 @@ const AdminHeader = ({setOpen}) => {
           {
           style: {
             background: 'white',
-            color: 'black',
-            width: "200px"
+            color: 'green',
           },
     })
   }

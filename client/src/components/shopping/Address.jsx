@@ -30,83 +30,117 @@ function Address() {
 
   const handleManageAddress = (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    if (currentEditedId !== null) {
-      // Editing an existing address
-      dispatch(
-        updateAddress({
-          userId: user?.id,
-          addressId: currentEditedId,
-          formData,
-        })
-      )
-        .then((data) => {
-          setIsLoading(false);
-          if (data?.payload?.success) {
-            dispatch(fetchAllAddress(user?.id));
-            setCurrentEditedId(null);
-            setFormData(initialAddressFormData);
-            toast.success("Address updated successfully", {
-              style: {
-                background: "white",
-                color: "black",
-              },
-            });
-          }
-        })
-        .catch(() => {
-          setIsLoading(false);
-          toast.error("Failed to update address");
-        });
-    } else {
-      // Adding a new address
-      dispatch(
-        addAddress({
-          ...formData,
-          userId: user?.id,
-        })
-      )
-        .then((data) => {
-          setIsLoading(false);
-          if (data?.payload?.success) {
-            dispatch(fetchAllAddress(user?.id));
-            setFormData(initialAddressFormData);
-            toast.success("Address created successfully", {
-              style: {
-                background: "white",
-                color: "black",
-              },
-            });
-          }
-        })
-        .catch(() => {
-          setIsLoading(false);
-          toast.error("Failed to add address");
-        });
-    }
-  };
+  // Only check address limit when adding a new address (not editing)
+  if (currentEditedId === null && addressList.length >= 3) {
+    toast.error("You can add just 3 addresses", {
+      style: {
+        background: "white",
+        color: "red",
+      },
+    });
+    return;
+  }
 
-  const handleDeleteAddress = (getCurrentAddress) => {
+  setIsLoading(true);
+
+  if (currentEditedId !== null) {
+    // Editing an existing address
     dispatch(
-      deleteAddress({ userId: user?.id, addressId: getCurrentAddress?._id })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchAllAddress(user?.id));
-        toast.success("Address deleted successfully", {
+      updateAddress({
+        userId: user?.id,
+        addressId: currentEditedId,
+        formData,
+      })
+    )
+      .then((data) => {
+        setIsLoading(false);
+        if (data?.payload?.success) {
+          dispatch(fetchAllAddress(user?.id));
+          setCurrentEditedId(null);
+          setFormData(initialAddressFormData);
+          toast.success("Address updated successfully", {
+            style: {
+              background: "white",
+              color: "green",
+            },
+          });
+        }
+      })
+      .catch(() => {
+        setIsLoading(false);
+        toast.error("Failed to update address", {
           style: {
             background: "white",
-            color: "black",
+            color: "red",
           },
         });
-      }
-    });
+      });
+  } else {
+    // Adding a new address
+    dispatch(
+      addAddress({
+        ...formData,
+        userId: user?.id,
+      })
+    )
+      .then((data) => {
+        setIsLoading(false);
+        if (data?.payload?.success) {
+          dispatch(fetchAllAddress(user?.id));
+          setFormData(initialAddressFormData);
+          toast.success("Address created successfully", {
+            style: {
+              background: "white",
+              color: "green",
+            },
+          });
+        }
+      })
+      .catch(() => {
+        setIsLoading(false);
+        toast.error("Failed to add address", {
+          style: {
+            background: "white",
+            color: "red",
+          },
+        });
+      });
+  }
+};
+
+  const handleDeleteAddress = (getCurrentAddress) => {
+    setIsLoading(true);
+    dispatch(
+      deleteAddress({ userId: user?.id, addressId: getCurrentAddress?._id })
+    )
+      .then((data) => {
+        if (data?.payload?.success) {
+          dispatch(fetchAllAddress(user?.id));
+          toast.success("Address deleted successfully", {
+            style: {
+              background: "white",
+              color: "green",
+            },
+          });
+        }
+      })
+      .catch(() => {
+        toast.error("Failed to delete address", {
+          style: {
+            background: "white",
+            color: "red",
+          },
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleEditAddress = (getCurrentAddress) => {
     setCurrentEditedId(getCurrentAddress?._id);
     setFormData({
-      ...formData,
       address: getCurrentAddress?.address,
       city: getCurrentAddress?.city,
       phone: getCurrentAddress?.phone,
@@ -116,9 +150,7 @@ function Address() {
   };
 
   const isFormValid = () => {
-    return Object.keys(formData)
-      .map((key) => formData[key] !== "")
-      .every((item) => item);
+    return Object.values(formData).every((value) => value !== "");
   };
 
   useEffect(() => {
@@ -130,11 +162,11 @@ function Address() {
       {/* Address List Section */}
       <div className="mb-6">
         <h2 className="text-xl font-bold mb-4">Your Addresses</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
           {addressList && addressList.length > 0 ? (
             addressList.map((address) => (
               <AddressCard
-                key={address.id}
+                key={address._id}
                 addressInfo={address}
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
@@ -159,10 +191,10 @@ function Address() {
             formControls={addressFormControls}
             formData={formData}
             setFormData={setFormData}
-            buttonText={currentEditedId !== null ? 'Edit' : 'Add'}
+            buttonText={currentEditedId !== null ? "Edit" : "Add"}
             onSubmit={handleManageAddress}
             isButtonDisabled={!isFormValid() || isLoading}
-            />
+          />
         </CardContent>
       </div>
     </Card>

@@ -25,14 +25,14 @@ const AuthLogin = () => {
           {
           style: {
             background: 'white',
-            color: 'black',
+            color: 'green',
           }
         });
        } else {
           toast.error(data.payload.message, {
               style: {
-              background: 'red',
-              color: 'white',
+              background: 'white',
+              color: 'red',
             }
           });
        };

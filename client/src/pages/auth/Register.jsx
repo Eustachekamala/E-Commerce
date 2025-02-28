@@ -25,10 +25,8 @@ const AuthRegister = () => {
         toast.success(data.payload.message,
           {
           style: {
-            background: 'green',
-            color: 'white',
-            margin: "auto",
-            textAlign: "center"
+            background: 'white',
+            color: 'green',
           }
         });
 
@@ -38,10 +36,8 @@ const AuthRegister = () => {
       } else {
         toast.error(data.payload.message, {
           style: {
-            background: 'red',
-            color: 'white',
-            margin: "auto",
-            textAlign: "center"
+            background: 'white',
+            color: 'red',
           }
         })
       }

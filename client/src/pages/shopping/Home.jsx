@@ -78,14 +78,14 @@ function ShoppingHome() {
           toast.success("Product added to the cart successfully", {
             style: {
               background: "white",
-              color: "black",
+              color: "green",
             },
           });
         } else {
           toast.error("Failed to add product to cart", {
             style: {
               background: "white",
-              color: "black",
+              color: "red",
             },
           });
         }
@@ -95,7 +95,7 @@ function ShoppingHome() {
         toast.error("An error occurred while adding to cart", {
           style: {
             background: "white",
-            color: "black",
+            color: "red",
           },
         });
       });

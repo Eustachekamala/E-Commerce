@@ -67,7 +67,7 @@ const AdminProducts = () => {
           {
           style: {
             background: 'white',
-            color: 'black',
+            color: 'green',
           }
         })
         setFormData(initialFormData);
@@ -90,7 +90,7 @@ const AdminProducts = () => {
           {
           style: {
             background: 'white',
-            color: 'black',
+            color: 'green',
           }
         })
       }
@@ -111,7 +111,7 @@ const AdminProducts = () => {
           {
           style: {
             background: 'white',
-            color: 'black',
+            color: 'green',
           }
         })
       }

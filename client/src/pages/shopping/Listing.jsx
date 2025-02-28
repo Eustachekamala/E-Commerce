@@ -53,9 +53,7 @@ function ShoppingListing() {
 // The function checks if getSectionId exists in the copyFilters object.
 // If getSectionId does not exist in copyFilters, it adds a new key-value pair to copyFilters
 // where the key is getSectionId and the value is an array containing getCurrentOption.
-    const handleFilter = (getSectionId, getCurrentOption) => {
-        console.log(getSectionId, getCurrentOption);
-        
+    const handleFilter = (getSectionId, getCurrentOption) => { 
         let copyFilters = {...filters};
         const indexOfCurrentSetion = Object.keys(copyFilters).indexOf(getSectionId);
 
@@ -88,14 +86,14 @@ function ShoppingListing() {
                 toast.success("Product added to the cart successfully", {
                     style: {
                         background: "white",
-                        color: "black",
+                        color: "green",
                     },
                 });
             } else {
                 toast.error("Failed to add product to cart", {
                     style: {
                         background: "white",
-                        color: "black",
+                        color: "red",
                     },
                 });
             }
@@ -105,7 +103,7 @@ function ShoppingListing() {
             toast.error("An error occurred while adding to cart", {
                 style: {
                     background: "white",
-                    color: "black",
+                    color: "red",
         
                 },
             });

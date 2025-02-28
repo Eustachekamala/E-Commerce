@@ -13,17 +13,17 @@ function UserCartItemsContent({ cartItems }) {
         dispatch(deleteCartItem({ userId: user?.id, productId: getCartItem?.productId }))
           .then((data) => {
             if (data?.payload?.success) {
-                toast.success("Cart Item is deleted", {
+                toast.success("Cart Item is deleted successfully", {
                     style: {
                         background: "white",
-                        color: "black",
+                        color: "green",
                     },
                 });
             } else {
                 toast.error("Failed to delete product in the cart", {
                     style: {
                         background: "white",
-                        color: "black",
+                        color: "red",
                     },
                 });
             }
@@ -33,7 +33,7 @@ function UserCartItemsContent({ cartItems }) {
             toast.error("An error occurred while adding to cart", {
                 style: {
                     background: "white",
-                    color: "black",
+                    color: "red",
         
                 },
             });
@@ -48,14 +48,14 @@ function UserCartItemsContent({ cartItems }) {
             toast.success("Cart item is updated", {
                       style: {
                           background: "white",
-                          color: "black",
+                          color: "green",
                       },
                   });
               } else {
                 toast.error("Failed to update  cart", {
                     style: {
                         background: "white",
-                        color: "black",
+                        color: "red",
                     },
                 });
             }
