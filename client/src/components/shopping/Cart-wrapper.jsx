@@ -7,8 +7,11 @@ import {
   SheetDescription,
 } from "../ui/sheet";
 import UserCartItemsContent from "./Cart-items-content";
+import { useNavigate } from "react-router-dom";
 
 function UserCartwrapper({ cartItems }) {
+  const navigate = useNavigate()
+
   const totalCartAmount =
     cartItems && cartItems.length > 0
       ? cartItems.reduce(
@@ -44,7 +47,7 @@ function UserCartwrapper({ cartItems }) {
           <span className="font-bold">${totalCartAmount}</span>
         </div>
       </div>
-      <Button className="w-full mt-5">Checkout</Button>
+      <Button onClick={() => navigate('/shop/checkout')} className="w-full mt-5 cursor-pointer">Checkout</Button>
     </SheetContent>
   );
 }

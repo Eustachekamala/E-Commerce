@@ -9,7 +9,7 @@ import axios from "axios";
 const ProductImageUpload = ({
   imageFile,
   setImageFile,
-  uploadedImageUrl,
+ uploadedImageUrl, 
   setUploadedImageUrl,
   setImageLoadingState,
   imageLoadingState,
@@ -45,7 +45,6 @@ const ProductImageUpload = ({
     data.append('my_file', imageFile);
     try {
       const response = await axios.post("http://localhost:8000/api/admin/products/upload-image", data);
-      console.log(response, 'response');
       
       if (response?.data?.success) {
         setUploadedImageUrl(response.data.result.url);

@@ -16,7 +16,7 @@ function ShoppingAccount() {
       </div>
 
       {/* Tabs Section */}
-      <div className="container mx-auto grid grid-cols-1 gap-8 py-8">
+      <div className="container mx-auto grid grid-cols-1 gap-8 py-8 p-2 md:pl-32 md:pr-32">
         <div className="flex flex-col rounded-lg border bg-background p-6 shadow-sm">
           <Tabs defaultValue="orders">
             {/* Tabs List */}
