@@ -3,18 +3,30 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Label } from "../ui/label";
 import PropTypes from "prop-types";
 
-function AddressCard({ addressInfo, handleDeleteAddress, handleEditAddress }) {
+function AddressCard({
+  addressInfo,
+  handleDeleteAddress,
+  handleEditAddress,
+  setCurrentSeletectedAddress,
+}) {
   // Construct the Google Maps URL for the address
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     `${addressInfo.address}, ${addressInfo.city}, ${addressInfo.pincode}`
   )}`;
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-300">
+    <Card
+      onClick={() =>
+        setCurrentSeletectedAddress
+          ? setCurrentSeletectedAddress(addressInfo)
+          : null
+      }
+      className="hover:shadow-lg transition-shadow duration-300"
+    >
       <CardContent className="p-4">
         {/* Google Maps Link */}
         <div className="space-y-1">
-          <Label className="font-semibold">Location: {" "}</Label>
+          <Label className="font-semibold">Location: </Label>
           <a
             href={mapsUrl}
             target="_blank"
@@ -48,16 +60,8 @@ function AddressCard({ addressInfo, handleDeleteAddress, handleEditAddress }) {
 
       {/* Footer with Edit and Delete Buttons */}
       <CardFooter className="flex justify-between">
-        <Button
-          onClick={() => handleEditAddress(addressInfo)}
-        >
-          Edit
-        </Button>
-        <Button
-          onClick={() => handleDeleteAddress(addressInfo)}
-        >
-          Delete
-        </Button>
+        <Button onClick={() => handleEditAddress(addressInfo)}>Edit</Button>
+        <Button onClick={() => handleDeleteAddress(addressInfo)}>Delete</Button>
       </CardFooter>
     </Card>
   );
@@ -67,6 +71,7 @@ AddressCard.propTypes = {
   addressInfo: PropTypes.object.isRequired,
   handleDeleteAddress: PropTypes.func.isRequired,
   handleEditAddress: PropTypes.func.isRequired,
+  setCurrentSeletectedAddress: PropTypes.any,
 };
 
 export default AddressCard;
