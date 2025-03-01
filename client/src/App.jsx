@@ -6,7 +6,6 @@ import AdminLayout from "./components/admin/Layout"
 import AdminDashboard from "./pages/admin/Dashboard"
 import AdminFeatures from "./pages/admin/Features"
 import AdminProducts from "./pages/admin/Products"
-import AdminOrders from "./pages/admin/Orders"
 import ShoppingLayout from "./components/shopping/Loyout"
 import NotFound from "./pages/Not-found/NotFound"
 import ShoppingAccoount from "./pages/shopping/Account"
@@ -19,6 +18,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { Loader2 } from "lucide-react"
 import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice"
+import AdminOrdersList from "./pages/admin/Orders"
+import PaypalReturnPage from "./pages/shopping/Paypal-return"
+import PaymentSuccessPage from "./pages/shopping/Payment-success"
+import PaymentFaildPage from "./pages/shopping/Payment-faild"
 
 function App() {
  const {user, isAuthenticated, isLoading } = useSelector(state => state.auth)
@@ -56,17 +59,20 @@ function App() {
             <Route path="dashboard" element={<AdminDashboard/>}/>
             <Route path="features" element={<AdminFeatures/>}/>
             <Route path="products" element={<AdminProducts/>}/>
-            <Route path="orders" element={<AdminOrders/>}/>
+            <Route path="orders" element={<AdminOrdersList/>}/>
          </Route>
          <Route path="/shop" element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
             <ShoppingLayout/>
           </CheckAuth>
          }>
-            <Route path="account" element={<ShoppingAccoount/>}></Route>
-            <Route path="checkout" element={<ShopingCheckout/>}></Route>
+            <Route path="account" element={<ShoppingAccoount/>}/>
+            <Route path="checkout" element={<ShopingCheckout/>}/>
             <Route path="home" element={<ShoppingHome/>}></Route>
-            <Route path="listing" element={<ShoppingListing/>}></Route>
+            <Route path="listing" element={<ShoppingListing/>}/>
+            <Route path="paypal-return" element={<PaypalReturnPage/>}/>
+            <Route path="payment-success" element={<PaymentSuccessPage/>}/>
+            <Route path="payment-faild" element={<PaymentFaildPage/>}/>
          </Route>
         <Route path="/unauth-page" element={<Unauthorized/>}/>
         <Route path="*" element={<NotFound/>}/>

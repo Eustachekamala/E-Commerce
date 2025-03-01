@@ -9,8 +9,8 @@ import {
 import UserCartItemsContent from "./Cart-items-content";
 import { useNavigate } from "react-router-dom";
 
-function UserCartwrapper({ cartItems }) {
-  const navigate = useNavigate()
+function UserCartwrapper({ cartItems, setOpenCartSheet }) {
+  const navigate = useNavigate();
 
   const totalCartAmount =
     cartItems && cartItems.length > 0
@@ -20,12 +20,13 @@ function UserCartwrapper({ cartItems }) {
             (currentItem?.salePrice > 0
               ? currentItem?.salePrice
               : currentItem?.price) *
-              currentItem?.quantity, 0
+              currentItem?.quantity,
+          0
         )
       : 0;
 
   return (
-    <SheetContent className="sm:max-w-md" aria-describedby="cart-description">
+    <SheetContent className="sm:max-w-md overflow-y-scroll" aria-describedby="cart-description">
       <SheetHeader>
         <SheetTitle>Your cart</SheetTitle>
         <SheetDescription id="cart-description">
@@ -35,19 +36,27 @@ function UserCartwrapper({ cartItems }) {
       <div className="mt-8 space-y-4">
         {cartItems && cartItems.length > 0 ? (
           cartItems.map((item) => (
-            <UserCartItemsContent key={item.productId} cartItems={item} />
+            <UserCartItemsContent key={item.productId} cartItem={item} />
           ))
         ) : (
-          <p className="text-center text-gray-500">Your cart is empty.</p>
+          <p className="text-gray-500">No items in the cart.</p>
         )}
       </div>
       <div className="mt-8 space-y-4">
         <div className="flex justify-between items-center">
           <span className="font-bold">Total</span>
-          <span className="font-bold">${totalCartAmount}</span>
+          <span className="font-bold">${totalCartAmount.toFixed(2)}</span>
         </div>
       </div>
-      <Button onClick={() => navigate('/shop/checkout')} className="w-full mt-5 cursor-pointer">Checkout</Button>
+      <Button
+        onClick={() => {
+          navigate("/shop/checkout");
+          setOpenCartSheet(false);
+        }}
+        className="w-full mt-5 cursor-pointer"
+      >
+        Checkout
+      </Button>
     </SheetContent>
   );
 }
@@ -63,6 +72,7 @@ UserCartwrapper.propTypes = {
       quantity: PropTypes.number,
     })
   ),
+  setOpenCartSheet: PropTypes.func.isRequired,
 };
 
 export default UserCartwrapper;
