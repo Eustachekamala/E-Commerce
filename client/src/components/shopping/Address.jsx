@@ -11,6 +11,7 @@ import {
 } from "@/store/shop/address-slice";
 import { toast } from "sonner";
 import AddressCard from "./Address-card";
+import PropTypes from "prop-types";
 
 const initialAddressFormData = {
   address: "",
@@ -20,7 +21,7 @@ const initialAddressFormData = {
   notes: "",
 };
 
-function Address() {
+function Address({setCurrentSeletectedAddress}) {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const dispatch = useDispatch();
@@ -170,6 +171,7 @@ function Address() {
                 addressInfo={address}
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
+                setCurrentSeletectedAddress={setCurrentSeletectedAddress}
               />
             ))
           ) : (
@@ -199,6 +201,10 @@ function Address() {
       </div>
     </Card>
   );
+}
+
+Address.propTypes = {
+  setCurrentSeletectedAddress : PropTypes.any
 }
 
 export default Address;

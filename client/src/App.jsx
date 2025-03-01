@@ -19,6 +19,9 @@ import { Loader2 } from "lucide-react"
 import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice"
 import AdminOrdersList from "./pages/admin/Orders"
+import PaypalReturnPage from "./pages/shopping/Paypal-return"
+import PaymentSuccessPage from "./pages/shopping/Payment-success"
+import PaymentFaildPage from "./pages/shopping/Payment-faild"
 
 function App() {
  const {user, isAuthenticated, isLoading } = useSelector(state => state.auth)
@@ -63,10 +66,13 @@ function App() {
             <ShoppingLayout/>
           </CheckAuth>
          }>
-            <Route path="account" element={<ShoppingAccoount/>}></Route>
-            <Route path="checkout" element={<ShopingCheckout/>}></Route>
+            <Route path="account" element={<ShoppingAccoount/>}/>
+            <Route path="checkout" element={<ShopingCheckout/>}/>
             <Route path="home" element={<ShoppingHome/>}></Route>
-            <Route path="listing" element={<ShoppingListing/>}></Route>
+            <Route path="listing" element={<ShoppingListing/>}/>
+            <Route path="paypal-return" element={<PaypalReturnPage/>}/>
+            <Route path="payment-success" element={<PaymentSuccessPage/>}/>
+            <Route path="payment-faild" element={<PaymentFaildPage/>}/>
          </Route>
         <Route path="/unauth-page" element={<Unauthorized/>}/>
         <Route path="*" element={<NotFound/>}/>
