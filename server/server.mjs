@@ -6,6 +6,7 @@ import cors from "cors";
 import globalErrorHandler from "./middlewares/globalErrorHandler.mjs";
 import authRoutes from "./routes/auth/authRoutes.mjs"
 import adminProductRouter from "./routes/admin/product-routes.mjs"
+import adminOrderRouter from "./routes/admin/order-routes.mjs"
 import shopProductRouter from "./routes/shop/products-route.mjs"
 import shopCartRouter from "./routes/shop/cart-routes.mjs"
 import shopAddressRouter from "./routes/shop/address-routes.mjs"
@@ -43,6 +44,7 @@ app.use("/api/auth",authRoutes);
 
 app.use(globalErrorHandler);
 app.use('/api/admin/products',adminProductRouter);
+app.use('/api/admin/orders',adminOrderRouter);
 app.use('/api/shop/products', shopProductRouter);
 app.use('/api/shop/cart', shopCartRouter);
 app.use('/api/shop/address', shopAddressRouter);
