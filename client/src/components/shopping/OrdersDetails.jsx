@@ -143,19 +143,7 @@ function ShoppingOrderDetailsView({ orderDetails }) {
             <div className="flex items-center space-x-2">
               <MapPin className="h-4 w-4 text-gray-500" />
               <span className="text-sm text-gray-700">
-                {orderDetails?.addressInfo?.address}
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-4 w-4 text-gray-500" />
-              <span className="text-sm text-gray-700">
-                {orderDetails?.addressInfo?.city}
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-4 w-4 text-gray-500" />
-              <span className="text-sm text-gray-700">
-                {orderDetails?.addressInfo?.pincode}
+                {orderDetails?.addressInfo?.address}, {orderDetails?.addressInfo?.city}, {orderDetails?.addressInfo?.pincode}
               </span>
             </div>
             <div className="flex items-center space-x-2">
