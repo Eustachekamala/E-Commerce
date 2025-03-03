@@ -33,6 +33,22 @@ export const getAllOrderDetailsForAllUser = createAsyncThunk(
   }
 );
 
+export const updateOrderStatus = createAsyncThunk(
+  "/order/updateOrderStatus",
+  async ({id, orderStatus}, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/admin/orders/update/${id}`, {
+          orderStatus
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
 const adminOrderSlice = createSlice({
     name : 'adminOrderSlice',
     initialState,
@@ -62,7 +78,7 @@ const adminOrderSlice = createSlice({
     })
 })
 
-export const { resetOrderDetails } = adminOrderSlice.reducer
+export const { resetOrderDetails } = adminOrderSlice.actions
 
 
 export default adminOrderSlice.reducer;

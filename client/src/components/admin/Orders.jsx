@@ -83,9 +83,9 @@ function AdminOrders() {
                     <TableCell>
                       <Badge
                         className={`${
-                          orderItem?.orderStatus === "confirmed"
+                          orderItem?.orderStatus === "confirmed" || orderItem?.orderStatus === "delivered"
                             ? "bg-green-600"
-                            : orderItem?.orderStatus === "pending"
+                            : orderItem?.orderStatus === "pending" || orderItem?.orderStatus === "inProcess"
                             ? "bg-yellow-600"
                             : orderItem?.orderStatus === "rejected"
                             ? "bg-red-600"
@@ -139,9 +139,9 @@ function AdminOrders() {
                     <p className="text-sm font-medium text-gray-700">Order Status</p>
                     <Badge
                       className={`${
-                        orderItem?.orderStatus === "confirmed"
+                        orderItem?.orderStatus === "confirmed" || orderItem?.orderStatus === "delivered"
                           ? "bg-green-600"
-                          : orderItem?.orderStatus === "pending"
+                          : orderItem?.orderStatus === "pending" || orderItem?.orderStatus === "inProcess"
                           ? "bg-yellow-600"
                           : orderItem?.orderStatus === "rejected"
                           ? "bg-red-600"
