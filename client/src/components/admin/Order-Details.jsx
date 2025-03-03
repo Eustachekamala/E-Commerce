@@ -12,11 +12,13 @@ import {
   MapPin,
   Phone,
   CreditCard,
+  XIcon,
 } from "lucide-react";
 import { useDispatch, useSelector} from "react-redux";
-import { getAllOrdersOfAllUser } from "@/store/admin/orders-slice";
+import { getAllOrderDetailsForAllUser, getAllOrdersOfAllUser, updateOrderStatus } from "@/store/admin/orders-slice";
 import { Badge } from "../ui/badge";
 import PropTypes from "prop-types";
+import { toast } from "sonner";
 
 const initialFormData = {
   status: "",
@@ -25,7 +27,6 @@ const initialFormData = {
 function AdminOrderDetailsView({orderDetails}) {
   const [formData, setFormData] = useState(initialFormData);
   const { user } = useSelector(state => state.auth)
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,15 +35,30 @@ function AdminOrderDetailsView({orderDetails}) {
 
   const handleUpdateStatus = (e) => {
     e.preventDefault();
-    // Handle status update logic here
-  };
+    const { status } = formData;
+    dispatch(updateOrderStatus({id : orderDetails?._id, orderStatus : status})).then((data) => {
+      if(data?.payload?.success){
+        dispatch(getAllOrderDetailsForAllUser(orderDetails?._id))
+        dispatch(getAllOrdersOfAllUser())
+        setFormData(initialFormData)
+        toast(data.payload.message, {
+          style : {
+            backgroundColor : "white",
+            color : "green"
+          }
+        })
+      }
+    })
+  }
 
   // Determine the icon and color based on order status
   const orderStatusIcon =
-    orderDetails?.orderStatus === "confirmed" ? (
+    orderDetails?.orderStatus === "confirmed" || orderDetails?.orderStatus === "delivered" ? (
       <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-    ) : (
+    ) : orderDetails?.orderStatus === "pending" || orderDetails?.orderStatus === "inProcess" ? (
       <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600" />
+    ) : (
+      <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
     );
 
   return (
@@ -53,14 +69,16 @@ function AdminOrderDetailsView({orderDetails}) {
           <div className="flex items-center space-x-2">
             {orderDetails?.paymentStatus === "paid" ? (
               <CheckCircle className="h-4 w-4 text-green-600" />
-            ) : (
+            ) : orderDetails?.paymentStatus === "pending" || orderDetails?.paymentStatus === "inProcess" ? (
               <Clock className="h-4 w-4 text-yellow-600" />
+            ) : (
+              <XIcon className="h-4 w-4 text-red-500" />
             )}
             <span
               className={`${
-                orderDetails?.paymentStatus === "paid"
-                  ? "text-green-600"
-                  : "text-yellow-600"
+                orderDetails?.paymentStatus === "paid" || orderDetails?.paymentStatus === "delivered"
+                  ? "text-green-600" :  orderDetails?.paymentStatus === "pending" ||  orderDetails?.paymentStatus === "inProcess"?
+                   "text-yellow-600" : "text-red-500"
               } text-sm`}
             >
               Payment Status: {orderDetails?.paymentStatus}
@@ -77,9 +95,11 @@ function AdminOrderDetailsView({orderDetails}) {
               {orderStatusIcon}
               <Badge
                 className={`${
-                  orderDetails?.orderStatus === "confirmed"
+                  orderDetails?.orderStatus === "confirmed" || orderDetails?.orderStatus === "delivered"
                     ? "text-white bg-green-600 hover:bg-green-700"
-                    : "bg-yellow-600 hover:bg-yellow-700 text-white"
+                    : orderDetails?.orderStatus === "pending" ||  orderDetails?.orderStatus === "inProcess"
+                    ? "bg-yellow-600 hover:bg-yelloew-700 text-white"
+                    : "bg-red-500 hover:bg-red-600 text-white"
                 } text-sm`}
               >
                 {orderDetails?.orderStatus}
