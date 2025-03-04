@@ -22,6 +22,7 @@ import AdminOrdersList from "./pages/admin/Orders"
 import PaypalReturnPage from "./pages/shopping/Paypal-return"
 import PaymentSuccessPage from "./pages/shopping/Payment-success"
 import PaymentFaildPage from "./pages/shopping/Payment-faild"
+import Search from "./pages/shopping/Search"
 
 function App() {
  const {user, isAuthenticated, isLoading } = useSelector(state => state.auth)
@@ -70,6 +71,7 @@ function App() {
             <Route path="checkout" element={<ShopingCheckout/>}/>
             <Route path="home" element={<ShoppingHome/>}></Route>
             <Route path="listing" element={<ShoppingListing/>}/>
+            <Route path="search" element={<Search/>}/>
             <Route path="paypal-return" element={<PaypalReturnPage/>}/>
             <Route path="payment-success" element={<PaymentSuccessPage/>}/>
             <Route path="payment-faild" element={<PaymentFaildPage/>}/>

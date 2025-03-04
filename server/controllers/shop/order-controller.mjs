@@ -1,5 +1,6 @@
 import Order from "../../models/Order.mjs";
-import Cart from "../../models/Cart.mjs"
+import Cart from "../../models/Cart.mjs";
+import Product from "../../models/Product.mjs"
 import paypal from "../../helpers/paypal.mjs";
 
 export const createOrder = async (req, res) => {
@@ -31,7 +32,7 @@ export const createOrder = async (req, res) => {
             return sum + (item.price * item.quantity);
         }, 0).toFixed(2);
 
-        console.log("Calculated Total:", totalAmount);
+        console.log("Calculated Total:","$",totalAmount);
 
         const create_payment_json = {
             intent: "sale",
@@ -123,7 +124,22 @@ export const capturePaymentOrder = async (req, res) => {
     order.paymentStatus = 'paid';
     order.orderStatus = 'confirmed';
     order.paymentId = paymentId;
-    order.payerId = payerId
+    order.payerId = payerId;
+
+    for(let item of order.cartItems){
+        let product = await Product.findById(item.productId);
+
+        if (!product) {
+            return res.status(404).json({
+                success : false,
+                message : `Not enough stock for this product`
+            });
+        }
+
+        product.totalStock -= item.quantity;
+
+        await product.save();
+    }
 
     const getCartId = order.cartId
     await Cart.findByIdAndDelete(getCartId)

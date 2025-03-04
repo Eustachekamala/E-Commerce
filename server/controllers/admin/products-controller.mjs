@@ -1,5 +1,5 @@
 import { imageUploadUtil } from "../../helpers/cloudinary.mjs";
-import Product from "../../models/ProductModel.mjs"
+import Product from "../../models/Product.mjs"
 
 /**
  * Handles the image upload process.
