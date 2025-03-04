@@ -33,9 +33,11 @@ function ShoppingListing() {
     const {productList, productDetails} = useSelector(state => state.shoppingProducts)
     const [filters, setFilters] = useState({});
     const [sort, setSort] = useState(null);
-    // eslint-disable-next-line no-unused-vars
     const [searchParams, setSearchParams] = useSearchParams();
     const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+    const { cartItems } = useSelector(state => state.shoppingCart);
+
+    const categorySearchParam = searchParams.get('category')
 
     //fetch List of products
     useEffect(() => {
@@ -77,8 +79,26 @@ function ShoppingListing() {
         sessionStorage.setItem('filters', JSON.stringify(copyFilters))
     }
 
-    function handleAddToCart(getCurrentProductId) {
-    console.log(getCurrentProductId);
+    function handleAddToCart(getCurrentProductId, getTotalStock) {
+    let getCartItems = cartItems.items || [];
+
+    if (getCartItems.length) {
+        const indexOfCurrentItem = getCartItems.findIndex(item => item.productId === getCurrentProductId);
+        if (indexOfCurrentItem > -1) {
+            const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+            if (getQuantity + 1 > getTotalStock) {
+                toast(`Only ${getQuantity} quantity can be added for this item`, {
+                    style : {
+                        backgroundColor : "white",
+                        color : "red"
+                    },
+                })
+                return;
+            }
+        }
+
+    }
+
     dispatch(addtoCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
         .then((data) => {
             if (data?.payload?.success) {
@@ -113,7 +133,7 @@ function ShoppingListing() {
     useEffect(() => {
         setSort('price-lowtohigh');
         setFilters(JSON.parse(sessionStorage.getItem('filters')) || {});
-    }, []);
+    }, [categorySearchParam]);
 
     useEffect(() => {
         if(filters && Object.keys(filters).length > 0){
@@ -133,7 +153,7 @@ function ShoppingListing() {
     const handleGetProductDetails = (getCurrentProductId) => {
         dispatch(fetchProductDetails(getCurrentProductId))
     }
-
+    
 
     return ( 
         <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 px-6">

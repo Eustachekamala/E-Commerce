@@ -8,6 +8,8 @@ import { toast } from "sonner";
 function UserCartItemsContent({ cartItem }) {
     const { user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
+    const { cartItems } = useSelector(state => state.shoppingCart);
+    const { productList } = useSelector(state => state.shoppingProducts)
 
     function handleCartItemDelete(getCartItem) {
         dispatch(deleteCartItem({ userId: user?.id, productId: getCartItem?.productId }))
@@ -40,26 +42,67 @@ function UserCartItemsContent({ cartItem }) {
         });
     }
 
-    function handleUpdateQuantity(getCartItem, typeOfAction){
-      dispatch(updateCartQuantity({userId : user?.id, productId : getCartItem?.productId, quantity :
-        typeOfAction === 'plus' ? 
-        getCartItem?.quantity + 1 : getCartItem?.quantity - 1 })).then(data => {
-          if(data?.payload?.success){
-            toast.success("Cart item is updated", {
-                      style: {
-                          background: "white",
-                          color: "green",
-                      },
-                  });
-              } else {
-                toast.error("Failed to update  cart", {
+    /**
+     * Handles the update of the quantity of a cart item.
+     * 
+     * @param {Object} getCartItem - The cart item to update.
+     * @param {string} typeOfAction - The type of action to perform ("plus" or "minus").
+     */
+    function handleUpdateQuantity(getCartItem, typeOfAction) {
+        // Check if the action is to increase the quantity
+        if (typeOfAction === "plus") {
+            // Get the current cart items
+            let getCartItems = cartItems.items || [];
+            // Check if there are any cart items
+            if (getCartItems.length) {
+                // Find the index of the current cart item
+                const indexOfCurrentCartItem = getCartItems.findIndex(item => item.productId === getCartItem?.productId);
+                // Find the index of the current product in the product list
+                const getCurrentProductIndex = productList.findIndex(product => product._id === getCartItem?.productId);
+                // Get the total stock of the current product
+                const getTotalStock = productList[getCurrentProductIndex].totalStock;
+                // Check if the current cart item exists
+                if (indexOfCurrentCartItem > -1) {
+                    // Get the quantity of the current cart item
+                    const getQuantity = getCartItems[indexOfCurrentCartItem].quantity;
+                    // Check if the new quantity exceeds the total stock
+                    if (getQuantity + 1 > getTotalStock) {
+                        // Show a toast message if the quantity exceeds the total stock
+                        toast(`Only ${getTotalStock - getQuantity} more of this item can be added`, {
+                            style: {
+                                backgroundColor: "white",
+                                color: "red"
+                            },
+                        });
+                        return;
+                    }
+                }
+            }
+        }
+        // Dispatch the action to update the cart quantity
+        dispatch(updateCartQuantity({
+            userId: user?.id,
+            productId: getCartItem?.productId,
+            quantity: typeOfAction === 'plus' ? getCartItem?.quantity + 1 : getCartItem?.quantity - 1
+        })).then(data => {
+            // Show a success toast message if the update was successful
+            if (data?.payload?.success) {
+                toast.success("Cart item is updated", {
+                    style: {
+                        background: "white",
+                        color: "green",
+                    },
+                });
+            } else {
+                // Show an error toast message if the update failed
+                toast.error("Failed to update cart", {
                     style: {
                         background: "white",
                         color: "red",
                     },
                 });
             }
-        })
+        });
     }
 
     return (
