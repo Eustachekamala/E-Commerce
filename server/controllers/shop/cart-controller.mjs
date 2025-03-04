@@ -1,5 +1,5 @@
 import Cart from "../../models/Cart.mjs";
-import Product from "../../models/ProductModel.mjs";
+import Product from "../../models/Product.mjs";
 
 
 export const addToCart = async (req, res) => {
