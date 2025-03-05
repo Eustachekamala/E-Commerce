@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 
 function AdminProductTile({ product, setCurrentEditedId, setOpenCreateProductsDialog, setFormData, handleDeleteProduct }) {
     return (
-        <Card className="w-full max-w-sm mx-auto shadow-lg">
+        <Card className="md:w-64 w-full md:h-80 h-80 mx-auto p-4 my-4 shadow-md hover:shadow-lg transition-shadow duration-300">
             <div className="relative">
                 {/* Image Container */}
-                <div className="w-full p-4">
+                <div className="h-40 w-40 mx-auto bg-gray-100 rounded-lg flex items-center justify-center">
                     <img
-                        className="w-full h-auto object-cover rounded-lg"
+                        className="object-cover rounded-lg h-32 w-32"
                         src={product?.image}
                         alt={product?.title}
                     />
@@ -17,7 +17,7 @@ function AdminProductTile({ product, setCurrentEditedId, setOpenCreateProductsDi
 
                 {/* Card Content */}
                 <CardContent className="p-4">
-                    <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
+                    <h2 className="text-lg font-bold mb-1 truncate">{product?.title}</h2>
                     <div className="flex justify-between items-center mb-2">
                         <span className={`${product.salePrice > 0 ? 'line-through' : ""} text-lg font-semibold text-primary`}>
                             ${product?.price}
@@ -29,7 +29,7 @@ function AdminProductTile({ product, setCurrentEditedId, setOpenCreateProductsDi
                 </CardContent>
 
                 {/* Card Footer */}
-                <CardFooter className="flex justify-between items-center p-4">
+                <CardFooter className="flex justify-between items-center p-0 pb-2">
                     <Button
                         onClick={() => {
                             setOpenCreateProductsDialog(true);
