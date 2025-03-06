@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: e-commerce-frontend
+    env: node
+    build:
+      command: |
+        npm install
+        npm run build
+    start: |
+      npm run dev
+    envVars:
+      - key: VITE_API_URL
+        value: https://e-commerce-1myo.onrender.com
+      - key: NODE_ENV
+        value: production
