@@ -48,8 +48,8 @@ const AdminProducts = () => {
 
   const [openCreateProductsDialog, setOpenCreateProductsDialog] = useState(false);
   const [formData, setFormData] =  useState(initialFormData) ;
-  const [imageFile, setImageFile] = useState(null);
   const [currentEditedId, setCurrentEditedId] = useState(null)
+  const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const { productList} = useSelector(state => state.adminProducts)

@@ -13,6 +13,7 @@ import shopAddressRouter from "./routes/shop/address-routes.mjs"
 import shopOrderRouter from "./routes/shop/order-routes.mjs"
 import shopSearchRouter from "./routes/shop/search-routes.mjs"
 import shopReviewRouter from "./routes/shop/product-review-routes.mjs"
+import commonFeatureRouter from "./routes/common/feature-routes.mjs"
 
 const app = express();
 const PORT = config.port;
@@ -53,6 +54,7 @@ app.use('/api/shop/address', shopAddressRouter);
 app.use('/api/shop/order', shopOrderRouter);
 app.use('/api/shop/search', shopSearchRouter);
 app.use('/api/shop/review', shopReviewRouter)
+app.use('/api/common/feature',commonFeatureRouter);
 
 app.listen(PORT, () => {
     console.log(`E-commerce running on port ${PORT}`);

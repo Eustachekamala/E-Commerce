@@ -9,11 +9,11 @@ import axios from "axios";
 const ProductImageUpload = ({
   imageFile,
   setImageFile,
- uploadedImageUrl, 
   setUploadedImageUrl,
   setImageLoadingState,
   imageLoadingState,
-  isEditMode
+  isEditMode,
+  isCustomStyling = false
 }) => {
   const inputRef = useRef(null);
 
@@ -61,7 +61,7 @@ const ProductImageUpload = ({
   }, [imageFile, uploadImageToCloudinary]);
 
   return (
-    <div className="w-full max-w-md mx-auto mt-4">
+    <div className={`w-full mt-4 ${isCustomStyling ? "": "max-w-md mx-auto"}`}>
       <Label className="text-lg font-semibold mb-2 block">Upload</Label>
       <div
         onDragOver={handleDragOver}
@@ -117,7 +117,8 @@ ProductImageUpload.propTypes = {
   setUploadedImageUrl: PropTypes.func.isRequired,
   setImageLoadingState: PropTypes.func.isRequired,
   imageLoadingState: PropTypes.bool.isRequired,
-  isEditMode : PropTypes.bool.isRequired
+  isEditMode : PropTypes.bool.isRequired,
+  isCustomStyling : PropTypes.bool
 };
 
 export default ProductImageUpload;

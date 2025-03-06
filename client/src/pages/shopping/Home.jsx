@@ -1,7 +1,4 @@
 import { Button } from "@/components/ui/button";
-import bannerOne from "../../assets/banner-1.webp";
-import bannerTwo from "../../assets/banner-2.webp";
-import bannerThree from "../../assets/banner-3.webp";
 import {
   BabyIcon,
   ChevronLeftIcon,
@@ -24,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { addtoCart, fetchCartItems } from "@/store/shop/cart-slice";
 import ProductDetailsDialog from "@/components/shopping/ProductDetails";
+import { getImageFeatures } from "@/store/common-slice";
 
 const categoriesWithIcons = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -45,9 +43,9 @@ const brandsWithIcons = [
 function ShoppingHome() {
   const { user } = useSelector((state) => state.auth);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = [bannerOne, bannerTwo, bannerThree];
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const { productList, productDetails } = useSelector((state) => state.shoppingProducts);
+  const { featureImageList } = useSelector(state => state.commonFeature);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -109,11 +107,11 @@ function ShoppingHome() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % featureImageList.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [featureImageList.length]);
 
   useEffect(() => {
     dispatch(
@@ -124,27 +122,32 @@ function ShoppingHome() {
     );
   }, [dispatch]);
 
+  useEffect(() => {
+          dispatch(getImageFeatures());
+      },[dispatch])
+      
+
   return (
     <div className="flex flex-col min-h-screen py-16">
       {/* Image Slider Section */}
       <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[600px] overflow-hidden">
-        {slides.map((slide, index) => (
+        {featureImageList && featureImageList.length > 0 ? featureImageList.map((slide, index) => (
           <img
             key={index}
-            src={slide}
+            src={slide.image}
             alt={`Banner ${index + 1}`}
             className={`${
               index === currentSlide ? "opacity-100" : "opacity-0"
             } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
           />
-        ))}
+        )) : null}
         <Button
           className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80 hover:bg-white/90"
           variant="outline"
           size="icon"
           onClick={() =>
             setCurrentSlide(
-              (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
+              (prevSlide) => (prevSlide - 1 + featureImageList.length) % featureImageList.length
             )
           }
         >
@@ -155,7 +158,7 @@ function ShoppingHome() {
           variant="outline"
           size="icon"
           onClick={() =>
-            setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length)
+            setCurrentSlide((prevSlide) => (prevSlide + 1) % featureImageList.length)
           }
         >
           <ChevronRightIcon className="w-4 h-4" />
