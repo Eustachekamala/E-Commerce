@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: e-commerce-backend
+    env: node
+    build:
+      command: |
+        npm install
+        npm run build
+    start: |
+      node server.mjs
