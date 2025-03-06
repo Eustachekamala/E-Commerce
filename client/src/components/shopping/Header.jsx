@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { logoutUser, resetTokenAndCredentials } from "@/store/auth-slice";
+import { logoutUser } from "@/store/auth-slice";
 import { toast } from "sonner";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import UserCartwrapper from "./Cart-wrapper";
@@ -30,6 +30,7 @@ import PropTypes from "prop-types";
 function MenuItems({ setOpenMenuSheet }) {
   const navigate = useNavigate();
   const location = useLocation();
+  // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleNavigate(getCurrentMenuItem) {
@@ -80,10 +81,7 @@ function HeaderRightContent() {
   const [openCartSheet, setOpenCartSheet] = useState(false);
 
   function handleLogout() {
-    // dispatch(logoutUser());
-    dispatch(resetTokenAndCredentials())
-    sessionStorage.clear()
-    navigate('/auth/login')
+    dispatch(logoutUser());
     toast.success("Logout successful", {
       style: {
         background: "white",

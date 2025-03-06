@@ -11,6 +11,7 @@ import { toast } from "sonner";
 
 function Search() {
   const [keyword, setKeyword] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
   const { productDetails } = useSelector(state => state.shoppingProducts)
   const dispatch = useDispatch();
@@ -101,7 +102,7 @@ function Search() {
       }
 
   return (
-    <div className="container mx-auto md:px-6 px-4 py-8">
+    <div className="container mx-auto md:px-6 px-4 py-20">
       {/* Search Input Section */}
       <div className="flex justify-center mb-8">
         <div className="w-full max-w-2xl flex items-center shadow-lg rounded-lg overflow-hidden">
