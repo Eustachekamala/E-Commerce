@@ -1,10 +1,10 @@
 import paypal from "paypal-rest-sdk"
-
+import config from "../config/config.mjs"
 
 paypal.configure({
     mode: 'sandbox',
-    client_id: 'AaxLIY1pmLEm6rTIODISCOCh9TEWCnDKa1RLevnEmqkLvg9pNalFwPS4DE_or_KEx6bEJG1OXGi5e3V9',
-    client_secret: 'EFulkCdOC9raY77LayhEzRyRD3xN8LLk30wlgckVy5cXcMs-nH6jrRNWFTa6HaTdxwzRF96rDTHuwnE8'
+    client_id: config.paypal_client_id,
+    client_secret: config.paypal_client_secret
 })
 
 export default paypal
