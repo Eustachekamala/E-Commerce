@@ -44,6 +44,10 @@ function App() {
     <div>
       {/** common component */}
       <Routes>
+        <Route path="/" element={
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          </CheckAuth>
+        }/>
          <Route path="/auth" element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
             <AuthLayout/>

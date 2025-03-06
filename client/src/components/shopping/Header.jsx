@@ -100,9 +100,16 @@ function HeaderRightContent() {
           onClick={() => setOpenCartSheet(true)}
           variant="outline"
           size="icon"
-          className=""
+          className="relative"
         >
           <ShoppingCart className="w-6 h-6" />
+         <span
+                className={`absolute top-[-5px] right-[-2px] text-xs font-semibold text-white bg-red-500 rounded-full w-5 h-5 flex items-center justify-center ${
+                    cartItems?.items?.length > 0 ? "scale-110 animate-spin" : ""
+                }`}
+            >
+                {cartItems?.items?.length || 0}
+            </span>
           <span className="sr-only">User cart</span>
         </Button>
         <UserCartwrapper
@@ -145,7 +152,7 @@ const ShoppingHeader = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b bg-background">
+      <header className="fixed top-0 z-50 w-full border-b bg-background">
         <div className="flex h-16 items-center justify-between px-4 md:px-6">
           <Link
             to="/shop/home"

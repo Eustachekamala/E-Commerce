@@ -8,6 +8,7 @@ function AddressCard({
   handleDeleteAddress,
   handleEditAddress,
   setCurrentSeletectedAddress,
+  selectedId
 }) {
   // Construct the Google Maps URL for the address
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -21,9 +22,11 @@ function AddressCard({
           ? setCurrentSeletectedAddress(addressInfo)
           : null
       }
-      className="hover:shadow-lg transition-shadow duration-300"
+     className={`hover:shadow-lg transition-shadow cursor-pointer duration-300 ${
+          selectedId?._id === addressInfo?._id ? "border-2 border-gray-500" : "border border-gray-200"
+      }`}
     >
-      <CardContent className="p-4">
+      <CardContent className={`${selectedId === addressInfo?._id ? "border-black" : ""} p-4`}>
         {/* Google Maps Link */}
         <div className="space-y-1">
           <Label className="font-semibold">Location: </Label>
@@ -72,6 +75,7 @@ AddressCard.propTypes = {
   handleDeleteAddress: PropTypes.func.isRequired,
   handleEditAddress: PropTypes.func.isRequired,
   setCurrentSeletectedAddress: PropTypes.any,
+  selectedId : PropTypes.any
 };
 
 export default AddressCard;

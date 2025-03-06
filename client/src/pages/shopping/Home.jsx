@@ -125,7 +125,7 @@ function ShoppingHome() {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen py-16">
       {/* Image Slider Section */}
       <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[600px] overflow-hidden">
         {slides.map((slide, index) => (
