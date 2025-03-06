@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../models/User.mjs";
+import config from "../../config/config.mjs";
 
 //register
 export const registerUser = async (req, res, next) => {
@@ -89,13 +90,12 @@ export const loginUser = async (req, res, next) => {
         role: checkUser.role,
         email: checkUser.email,
         userName: checkUser.userName
-         }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+         },config.accesTokenSecret, {
+      expiresIn: "60m",
     });
 
      // Send a success response with the token
-    res.cookie('token', token, { httpOnly : true, secure : false});
-    res.status(200).json({
+    res.cookie('token', token, { httpOnly : true, secure : true}).json({
         success: true,
         message : "Logged in succesfully",
         user: {
