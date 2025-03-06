@@ -24,7 +24,7 @@ connectDB();
 
 
 app.use(cors({
-    origin: ["http://localhost:3000", "http://192.168.88.242:3000"],
+    origin: config.client_base_url,
     methods : ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders : [
         "Content-Type",

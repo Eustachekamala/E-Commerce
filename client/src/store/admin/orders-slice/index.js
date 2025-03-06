@@ -13,7 +13,7 @@ export const getAllOrdersOfAllUser = createAsyncThunk(
   "/order/getAllOrdersOfAllUser",
   async () => {
     const response = await axios.get(
-      `http://localhost:8000/api/admin/orders/get`);
+      `${import.meta.env.VITE_API_URL}/api/admin/orders/get`);
       console.log("Orders Response:", response.data);
     return response.data;
   }
@@ -24,7 +24,7 @@ export const getAllOrderDetailsForAllUser = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/admin/orders/details/${id}`
+        `${import.meta.env.VITE_API_URL}/api/admin/orders/details/${id}`
       );
       return response.data;
     } catch (error) {
@@ -38,7 +38,7 @@ export const updateOrderStatus = createAsyncThunk(
   async ({id, orderStatus}, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/admin/orders/update/${id}`, {
+        `${import.meta.env.VITE_API_URL}/api/admin/orders/update/${id}`, {
           orderStatus
         }
       );
