@@ -10,6 +10,6 @@ services:
       npm run dev
     envVars:
       - key: VITE_API_URL
-        value: https://e-commerce-1myo.onrender.com
+        value: https://e-commerce-n2lq.onrender.com
       - key: NODE_ENV
         value: production
