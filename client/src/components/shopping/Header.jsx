@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { logoutUser } from "@/store/auth-slice";
+import { logoutUser, resetTokenAndCredentials } from "@/store/auth-slice";
 import { toast } from "sonner";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import UserCartwrapper from "./Cart-wrapper";
@@ -80,7 +80,10 @@ function HeaderRightContent() {
   const [openCartSheet, setOpenCartSheet] = useState(false);
 
   function handleLogout() {
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
+    dispatch(resetTokenAndCredentials())
+    sessionStorage.clear()
+    navigate('/auth/login')
     toast.success("Logout successful", {
       style: {
         background: "white",
