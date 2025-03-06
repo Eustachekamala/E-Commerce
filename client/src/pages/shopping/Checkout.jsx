@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { createNewOrder } from "@/store/shop/order-slice";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 function ShopingCheckout() {
     const { cartItems } = useSelector((state) => state.shoppingCart);
     const { user } = useSelector((state) => state.auth);
     const { approvalURL } = useSelector((state) => state.shoppingOrder);
     const [currentSeletectedAddress, setCurrentSeletectedAddress] = useState(null);
-    // eslint-disable-next-line no-unused-vars
     const [isPaymentStart, setIsPaymentStart] = useState(false);
     const  dispatch = useDispatch();
 
@@ -107,7 +107,7 @@ function ShopingCheckout() {
                 <img src={img} className="h-full w-full object-cover object-center" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 p-5">
-                <Address setCurrentSeletectedAddress={setCurrentSeletectedAddress} />
+                <Address selectedId={currentSeletectedAddress}  setCurrentSeletectedAddress={setCurrentSeletectedAddress} />
                 <div className="flex flex-col gap-4">
                     {cartItems?.items?.length > 0 ? (
                         cartItems.items.map((item) => (
@@ -123,7 +123,16 @@ function ShopingCheckout() {
                         </div>
                     </div>
                     <div className="mt-4 w-full">
-                        <Button onClick={handleInitiatePaypalPayment} className="w-full">Checkout with Paypal</Button>
+                        <Button onClick={handleInitiatePaypalPayment} className="w-full" disabled={isPaymentStart}>
+                            {isPaymentStart ? (
+                                <div className="flex items-center gap-2">
+                                    <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                                    <span>Processing Paypal Payment...</span>
+                                </div>
+                            ) : (
+                                "Checkout With Paypal"
+                            )}
+                        </Button>
                     </div>
                 </div>
             </div>
