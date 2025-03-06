@@ -95,16 +95,29 @@ export const loginUser = async (req, res, next) => {
     });
 
      // Send a success response with the token
-    res.cookie('token', token, { httpOnly : true, secure : true}).json({
-        success: true,
+    res.status(200).json({
+      success: true,
         message : "Logged in succesfully",
+        token,
         user: {
         id: checkUser._id,
         userName: checkUser.userName,
         email: checkUser.email,
         role: checkUser.role
-      },
+        }
     })
+
+
+    // res.cookie('token', token, { httpOnly : true, secure : true}).json({
+    //     success: true,
+    //     message : "Logged in succesfully",
+    //     user: {
+    //     id: checkUser._id,
+    //     userName: checkUser.userName,
+    //     email: checkUser.email,
+    //     role: checkUser.role
+    //   },
+    // })
 
   } catch (error) {
     // Handle errors
@@ -115,7 +128,7 @@ export const loginUser = async (req, res, next) => {
 
 
 //logout 
-export const logout = async (req, res, next) => {
+export const logout = async (req, res) => {
   res.clearCookie("token").json({
     success: true,
     message: "Logout succesfully"
@@ -124,10 +137,11 @@ export const logout = async (req, res, next) => {
 
 //auth middleware
 export const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token;
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(' ')[1]
   if(!token) return res.status(401).json({
     success : false,
-    messag : "unauthorized user!",
+    message : "Unauthorized user!",
   })
 
   try {
@@ -137,7 +151,27 @@ export const authMiddleware = async (req, res, next) => {
   } catch (error) {
       res.status(401).json({
       success : false,
-      messag : "unauthorized user!",
+      message : "unauthorized user!",
     })
   }
 }
+
+
+// export const authMiddleware = async (req, res, next) => {
+//   const token = req.cookies.token;
+//   if(!token) return res.status(401).json({
+//     success : false,
+//     message : "Unauthorized user!",
+//   })
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = decoded;
+//     next();
+//   } catch (error) {
+//       res.status(401).json({
+//       success : false,
+//       message : "Unauthorized user!",
+//     })
+//   }
+// }
